@@ -1,0 +1,3 @@
+- Check twitter for removing retweets
+- Think on how to incorporate neutral label into data
+- Decide which NLP technique individuals will use 
