@@ -1,0 +1,57 @@
+Git Repo Management & Code Review()s
+We use the fork-and-pull model of Git development. We start by creating a single main repository under the main account(https://github.com/nspranav/The-Pollsters.git) 
+
+Each developer on the project creates their own fork of that repository, committing only to their repository as they build features.
+
+When a feature is completed, the developer pulls upstream changes (i.e., any changes from the main repo since the last time they pulled from it) into their branch, corrects any merge conflicts, and opens a pull request to the main repo. The pull request can only be merged after the code is reviewed by at least one other engineer. We say "Good to pull" or "LGTM". Animated GIFs and emojis are excellent ways to add color and depth to your code reviews.
+
+Why do it this way? The biggest advantage is that it allows developers to constantly be pushing their code to the remote repo, but keeps code reviews clean by tying them to a single pull request.
+
+Keeping things in separate repos also prevents any accidental merges—there is no "NOOOOO! I didn’t mean to merge that to master!" with this system. All merges into the main code base must be purposeful and reviewed by another engineer.
+
+When joining a new project
+On the  project page, click the Fork button near the top right to create your own fork. (http://doc.gitlab.com/ce/gitlab-basics/fork-project.html)
+Once the fork is complete, copy the clone URL for your fork. It's in the project header area, above the file list.
+On the command line, git clone that copied URL, then cd into the newly-created project directory.
+Back on GitHub, go back to the original project page, and copy the clone URL from the project header.
+On the command line, add the repo as a remote source: git remote add upstream [copied URL]
+You now have two remote sources: nspranav/The-Pollsters is the original repo, and origin is your fork.
+When working on something new
+-Check out master: git checkout master
+-Create and switch to a new branch: git checkout -b bug_fixes_or_whatever
+-Do your work and commit your changes.
+-When finished with a feature or bug fix
+
+If you have not yet pushed your branch, make sure the branch is fully up to date with changes that other developers have made:
+-Update your master branch: git checkout master, then git pull upstream master
+-Rebase onto master: git checkout bug_fixes_or_whatever, then git rebase master
+
+If you have pushed your branch, you should not rebase it, because doing so will require a push --force to overwrite the branch that's on Git; this is generally frowned upon, since it will really screw things up if someone else has checked out that branch. Instead, create a new one and rebase that:
+-Update your master branch: git checkout master, then git pull upstream master
+-Create a new branch from your working branch: git checkout bug_fixes_or_whatever, then git checkout -b rebased_bug_fixes_or_whatever
+-Now, rebase that new branch onto master: git rebase master
+
+For the remaining steps, use your new branch, which we called rebased_bug_fixes_or_whatever in this example.
+-Push your branch to your fork of the repo: git push -u origin bug_fixes_or_whatever (include the -u so you don't need to specify the branch name next time you push)
+-On Git, open the project page, in your fork or the original project.
+-You'll see a big green button at the top offering to create a new pull request. Click that to start a pull request and review the changes you've made.
+-Before or after opening the PR, you can commit more changes and git push them to add them to the PR.
+
+While the PR is in review: if you want to continue working
+-Create a new branch from your previous one: git checkout -b more_fixes
+-Do NOT push this branch yet. You'll do that later, after the previous PR has been merged.
+
+While the PR is in review: if you need to make changes based on code review feedback
+-Make sure you have the branch for that PR checked out: git checkout bug_fixes_or_whatever
+-Make your changes and commit them
+-Push them to your fork: git push
+
+Once a PR has been merged
+-Update your local master branch: git checkout master, then git pull eti master to get the latest commits from the master branch in the project.
+-Push the updates to master to your fork: git push origin master
+-Delete your local branch that has been merged: git branch -d bug_fixes_or_whatever. This step isn't strictly required, but you'll quickly find yourself overwhelmed with old branches if you don't keep them tidy.
+
+If you had changes in another new branch while waiting for code review
+-Checkout your other branch: git checkout more_fixes
+-Since that branch was forked from your previous feature branch, you need to rebase it onto master so that your new commits are tacked on after the merge commit: git rebase master
+-Now, you can push your new branch: git push -u origin more_fixes
