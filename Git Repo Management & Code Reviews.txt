@@ -16,6 +16,7 @@ On the command line, git clone that copied URL, then cd into the newly-created p
 Back on GitHub, go back to the original project page, and copy the clone URL from the project header.
 On the command line, add the repo as a remote source: git remote add upstream [copied URL]
 You now have two remote sources: nspranav/The-Pollsters is the original repo, and origin is your fork.
+
 When working on something new
 -Check out master: git checkout master
 -Create and switch to a new branch: git checkout -b bug_fixes_or_whatever
